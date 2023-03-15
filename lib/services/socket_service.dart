@@ -1,12 +1,16 @@
+// ignore_for_file: unused_field
+
 import 'package:flutter/material.dart';
 import 'package:socket_io_client/socket_io_client.dart' as io;
 
 enum ServerStatus { online, offline, connecting }
 
 class SocketService with ChangeNotifier {
-  final ServerStatus _estadoDelServer = ServerStatus.connecting;
+  ServerStatus _estadoDelServer = ServerStatus.connecting;
 
-  SocketService(){
+  get estado => _estadoDelServer;
+
+  SocketService() {
     _initconfig();
   }
 
@@ -17,8 +21,15 @@ class SocketService with ChangeNotifier {
       'autoConnect': true
     });
     socket.onConnect((_) {
-      debugPrint('connect');
+      debugPrint('Conectado');
+      _estadoDelServer = ServerStatus.online;
+      notifyListeners();
     });
-    socket.onDisconnect((_) => debugPrint('disconnect'));
+
+    socket.onDisconnect((_) {
+      debugPrint('Desconectado');
+      _estadoDelServer = ServerStatus.offline;
+      notifyListeners();
+    });
   }
 }

@@ -31,5 +31,9 @@ class SocketService with ChangeNotifier {
       _estadoDelServer = ServerStatus.offline;
       notifyListeners();
     });
+
+    socket.on('Nuevo-Mensaje', (data) {
+      debugPrint('Mensaje-nuevo: $data');
+    });
   }
 }

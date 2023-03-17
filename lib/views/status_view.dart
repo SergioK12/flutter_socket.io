@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
-
+import 'package:provider/provider.dart';
+import 'package:socket/services/socket_service.dart';
 
 class StatusView extends StatelessWidget {
   const StatusView({super.key});
 
-
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    final socketservice = Provider.of<SocketService>(context);
+    return Scaffold(
       body: Center(
-        child: Text('Hola Mundo'),
-     ),
-   );
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [Text("Estado del servidor: ${socketservice.estado}")],
+        ),
+      ),
+    );
   }
 }

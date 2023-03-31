@@ -34,8 +34,9 @@ class SocketService with ChangeNotifier {
 
     socket.on('nuevo-mensaje', (data) {
       //debugPrint('Mensaje-nuevo: $data');
-      debugPrint('Nombre: ${ data["Persona"]}');
-      debugPrint('Nombre: ${ data["Mensaje"]}');
+      debugPrint('Nombre: ${data["Persona"]}');
+      debugPrint('Nombre: ${data["Mensaje"]}');
+      debugPrint('Error: ${ data.containsKey('Mensaje2')? data['Mensaje2']: "No hay" }');//controlando un valor nulo
     });
   }
 }

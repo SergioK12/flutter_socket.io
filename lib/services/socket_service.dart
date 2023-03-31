@@ -32,8 +32,10 @@ class SocketService with ChangeNotifier {
       notifyListeners();
     });
 
-    socket.on('Nuevo-Mensaje', (data) {
-      debugPrint('Mensaje-nuevo: $data');
+    socket.on('nuevo-mensaje', (data) {
+      //debugPrint('Mensaje-nuevo: $data');
+      debugPrint('Nombre: ${ data["Persona"]}');
+      debugPrint('Nombre: ${ data["Mensaje"]}');
     });
   }
 }

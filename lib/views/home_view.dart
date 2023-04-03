@@ -94,7 +94,6 @@ class _HomeViewState extends State<HomeView> {
       direction: DismissDirection.startToEnd,
       onDismissed: (direccion) {
         debugPrint(direccion.toString());
-        //TODO: llamar la funcion borrar
       },
       background: Container(
         padding: const EdgeInsets.only(left: 20),

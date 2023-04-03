@@ -15,6 +15,14 @@ class StatusView extends StatelessWidget {
           children: [Text("Estado del servidor: ${socketservice.estado}")],
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+          child: const Icon(Icons.message),
+          onPressed: () {
+            socketservice.socket.emit('emitir-mensaje',{
+              "nombre": 'Sergio',
+              "edad": '20'
+            });
+          }),
     );
   }
 }

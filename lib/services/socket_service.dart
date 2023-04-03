@@ -7,8 +7,10 @@ enum ServerStatus { online, offline, connecting }
 
 class SocketService with ChangeNotifier {
   ServerStatus _estadoDelServer = ServerStatus.connecting;
+  late io.Socket _socket;
 
-  get estado => _estadoDelServer;
+  ServerStatus get estado => _estadoDelServer;
+  io.Socket get socket => _socket;
 
   SocketService() {
     _initconfig();
@@ -16,27 +18,24 @@ class SocketService with ChangeNotifier {
 
   void _initconfig() {
     // Dart client
-    io.Socket socket = io.io('http://192.168.43.107:3000', {
+    _socket = io.io('http://192.168.43.107:3000', {
       'transports': ['websocket'],
       'autoConnect': true
     });
-    socket.onConnect((_) {
+    _socket.onConnect((_) {
       debugPrint('Conectado');
       _estadoDelServer = ServerStatus.online;
       notifyListeners();
     });
 
-    socket.onDisconnect((_) {
+    _socket.onDisconnect((_) {
       debugPrint('Desconectado');
       _estadoDelServer = ServerStatus.offline;
       notifyListeners();
     });
+  }
 
-    socket.on('nuevo-mensaje', (data) {
-      //debugPrint('Mensaje-nuevo: $data');
-      debugPrint('Nombre: ${data["Persona"]}');
-      debugPrint('Nombre: ${data["Mensaje"]}');
-      debugPrint('Error: ${ data.containsKey('Mensaje2')? data['Mensaje2']: "No hay" }');//controlando un valor nulo
-    });
+  void emitirflutter(dynamic data) {
+    _socket.emit('emitir-flutter', data);
   }
 }

@@ -18,10 +18,8 @@ class StatusView extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
           child: const Icon(Icons.message),
           onPressed: () {
-            socketservice.socket.emit('emitir-mensaje',{
-              "nombre": 'Sergio',
-              "edad": '20'
-            });
+            debugPrint('Emitir, Nombre: Sergio');
+            socketservice.emitirflutter( {"nombre": 'Sergio', "edad": '20'});
           }),
     );
   }

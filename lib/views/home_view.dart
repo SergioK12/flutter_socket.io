@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:socket/services/socket_service.dart';
 
 import '../models/models.dart';
 
@@ -22,8 +24,22 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
+    final socketservice = Provider.of<SocketService>(context);
     return Scaffold(
       appBar: AppBar(
+        actions: [
+          Container(
+            margin: const EdgeInsets.only(right: 10),
+            child: (socketservice.estado == ServerStatus.online )? const Icon(
+              Icons.check_circle,
+              color: Colors.green,
+            )
+            : const Icon(
+              Icons.error,
+              color: Colors.red,
+            ),
+          )
+        ],
         title: const Text(
           'Sockets',
           style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),

@@ -16,11 +16,26 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   List<Band> listabands = [
-    Band(id: "1", name: "Sergio", votes: 5),
-    Band(id: "2", name: "Abdiel", votes: 1),
-    Band(id: "3", name: "Duarte", votes: 7),
-    Band(id: "4", name: "Castillo", votes: 3),
+    // Band(id: "1", name: "Sergio", votes: 5),
+    // Band(id: "2", name: "Abdiel", votes: 1),
+    // Band(id: "3", name: "Duarte", votes: 7),
+    // Band(id: "4", name: "Castillo", votes: 3),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    final socketservice = Provider.of<SocketService>(context, listen: false);
+    socketservice.socket.on('bandas', (data) {
+        debugPrint(data.toString()); 
+        listabands = (data as List).
+        map((banda) => Band.fromMap(banda)).toList();
+        setState(() {
+          
+        });
+      }
+    );
+  }
 
   @override
   Widget build(BuildContext context) {

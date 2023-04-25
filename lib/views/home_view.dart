@@ -27,14 +27,10 @@ class _HomeViewState extends State<HomeView> {
     super.initState();
     final socketservice = Provider.of<SocketService>(context, listen: false);
     socketservice.socket.on('bandas', (data) {
-        debugPrint(data.toString()); 
-        listabands = (data as List).
-        map((banda) => Band.fromMap(banda)).toList();
-        setState(() {
-          
-        });
-      }
-    );
+      debugPrint(data.toString());
+      listabands = (data as List).map((banda) => Band.fromMap(banda)).toList();
+      setState(() {});
+    });
   }
 
   @override
@@ -45,14 +41,15 @@ class _HomeViewState extends State<HomeView> {
         actions: [
           Container(
             margin: const EdgeInsets.only(right: 10),
-            child: (socketservice.estado == ServerStatus.online )? const Icon(
-              Icons.check_circle,
-              color: Colors.green,
-            )
-            : const Icon(
-              Icons.error,
-              color: Colors.red,
-            ),
+            child: (socketservice.estado == ServerStatus.online)
+                ? const Icon(
+                    Icons.check_circle,
+                    color: Colors.green,
+                  )
+                : const Icon(
+                    Icons.error,
+                    color: Colors.red,
+                  ),
           )
         ],
         title: const Text(
@@ -64,7 +61,8 @@ class _HomeViewState extends State<HomeView> {
       ),
       body: ListView.builder(
           itemCount: listabands.length,
-          itemBuilder: (context, index) => _bandTile(listabands[index])),
+          itemBuilder: (context, index) =>
+              _bandTile(listabands[index], context)),
       floatingActionButton: FloatingActionButton(
           elevation: 1,
           child: const Icon(Icons.add),
@@ -119,7 +117,8 @@ class _HomeViewState extends State<HomeView> {
     }
   }
 
-  Widget _bandTile(Band band) {
+  Widget _bandTile(Band band, BuildContext context) {
+    final socketservice = Provider.of<SocketService>(context);
     return Dismissible(
       key: Key(band.id),
       direction: DismissDirection.startToEnd,
@@ -144,6 +143,7 @@ class _HomeViewState extends State<HomeView> {
         ),
         trailing: Text(band.votes.toString()),
         onTap: () {
+          socketservice.socket.emit('vote-band', {'id': band.id});
           debugPrint(band.name);
         },
       ),

@@ -17,7 +17,6 @@ class SocketService with ChangeNotifier {
   }
 
   void _initconfig() {
-    // Dart client
     _socket = io.io('http://192.168.87.76:3000', {
       'transports': ['websocket'],
       'autoConnect': true

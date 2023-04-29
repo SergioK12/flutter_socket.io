@@ -153,9 +153,8 @@ class _HomeViewState extends State<HomeView> {
   void addbandnametolist(String name) {
     debugPrint(name);
     if (name.length > 1) {
-      listabands.add(Band(id: DateTime.now().toString(), name: name, votes: 0));
-
-      setState(() {});
+      final socket = Provider.of<SocketService>(context, listen: false);
+      socket.socket.emit('add-band', {"name": name});
     }
     Navigator.pop(context);
   }

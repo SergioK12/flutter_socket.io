@@ -26,7 +26,7 @@ class _HomeViewState extends State<HomeView> {
   void initState() {
     super.initState();
     final socketservice = Provider.of<SocketService>(context, listen: false);
-    socketservice.socket.on('bandas', (data) {
+    socketservice.socket.on('active-bands', (data) {
       debugPrint(data.toString());
       listabands = (data as List).map((banda) => Band.fromMap(banda)).toList();
       setState(() {});
@@ -153,8 +153,8 @@ class _HomeViewState extends State<HomeView> {
   void addbandnametolist(String name) {
     debugPrint(name);
     if (name.length > 1) {
-      final socket = Provider.of<SocketService>(context, listen: false);
-      socket.socket.emit('add-band', {"name": name});
+      final sockets = Provider.of<SocketService>(context, listen: false);
+      sockets.socket.emit('add-band', {"name": name});
     }
     Navigator.pop(context);
   }

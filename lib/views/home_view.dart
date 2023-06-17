@@ -2,9 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pie_chart/pie_chart.dart';
 import 'package:provider/provider.dart';
 import 'package:socket/services/socket_service.dart';
-
 import '../models/models.dart';
 
 class HomeView extends StatefulWidget {
@@ -15,12 +15,7 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  List<Band> listabands = [
-    // Band(id: "1", name: "Sergio", votes: 5),
-    // Band(id: "2", name: "Abdiel", votes: 1),
-    // Band(id: "3", name: "Duarte", votes: 7),
-    // Band(id: "4", name: "Castillo", votes: 3),
-  ];
+  List<Band> listabands = [];
 
   @override
   void initState() {
@@ -59,10 +54,17 @@ class _HomeViewState extends State<HomeView> {
         centerTitle: true,
         backgroundColor: Colors.white,
       ),
-      body: ListView.builder(
-          itemCount: listabands.length,
-          itemBuilder: (context, index) =>
-              _bandTile(listabands[index], context)),
+      body: Column(
+        children: [
+          _showgraph(),
+          Expanded(
+            child: ListView.builder(
+                itemCount: listabands.length,
+                itemBuilder: (context, index) =>
+                    _bandTile(listabands[index], context)),
+          ),
+        ],
+      ),
       floatingActionButton: FloatingActionButton(
           elevation: 1,
           child: const Icon(Icons.add),
@@ -157,5 +159,21 @@ class _HomeViewState extends State<HomeView> {
       sockets.socket.emit('add-band', {"name": name});
     }
     Navigator.pop(context);
+  }
+
+  Widget _showgraph() {
+    // ignore: prefer_collection_literals
+
+    Map<String, double> dataMap = {"":0.0};
+    
+    for (var band in listabands) {
+      dataMap.putIfAbsent(band.name, () => band.votes.toDouble());
+    }
+
+    return SizedBox(
+      width: double.infinity,
+      height: 200,
+      child: PieChart(dataMap: dataMap),
+    );
   }
 }
